@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Assignment
 {
-    internal class PointCard
+    class PointCard
     {
+        
     }
 }

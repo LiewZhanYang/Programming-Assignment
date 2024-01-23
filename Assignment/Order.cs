@@ -24,9 +24,33 @@ namespace Assignment
             this.timeReceived = timeReceived;
         }
 
-        public ModifyIceCream(int)
+        public ModifyIceCream(int id)
         {
 
+        }
+
+        public AddiceCream(IceCream iceCream) 
+        { 
+
+        
+        }
+
+        public DeleteIceCream(int id)
+        {
+
+        }
+
+        public double CalculateTotal()
+        {
+            return
+        }
+
+        public override string ToString() 
+        {
+            return $"Id : {id}  TimeReceived : {timeReceived}" +
+                $"TimeFulfilled : {timeReceived}  IceCreamList :" +
+                $"{iceCreamList}";
+        
         }
     }
 }
