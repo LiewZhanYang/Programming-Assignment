@@ -8,7 +8,7 @@ namespace Assignment
 {
     class Cup : IceCream
     {
-        public Cup()
+        public Cup() 
         {
             
         }
@@ -18,9 +18,18 @@ namespace Assignment
             
         }
 
-        public double CalculatePrice()
+        public override double CalculatePrice()
         {
-            return 
+            double price = 4.0;
+            foreach(var flavour in Flavour)
+            {
+                price += flavour.Price();
+            }
+            foreach(var topping in Topping)
+            {
+                price += topping.Price();
+            }
+            return price;
         }
 
         public override string ToString()

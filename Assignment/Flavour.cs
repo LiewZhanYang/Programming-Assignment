@@ -8,9 +8,9 @@ namespace Assignment
 {
     class Flavour
     {
-        public string type{ get; set; }
-        public bool premium { get; set; }
-        public int quantity { get; set; }
+        public string Type{ get; set; }
+        public bool Premium { get; set; }
+        public int Quantity { get; set; }
 
 
         public Flavour()
@@ -20,11 +20,16 @@ namespace Assignment
 
         public Flavour(string type,bool premium,int quantity)
         {
-            this.type = type;
-            this.premium = premium;
-            this.quantity = quantity;
-            
+            Type = type;
+            Premium = premium;
+            Quantity = quantity;
         }
+
+        public double Price()
+        {
+            double basePrice = 2.0;
+        }
+
 
         public override string ToString() 
         {

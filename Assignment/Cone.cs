@@ -8,7 +8,7 @@ namespace Assignment
 {
     class Cone:IceCream
     {
-        public bool dipped { get; set; }
+        public bool Dipped { get; set; }
 
         public Cone()
         {
@@ -17,17 +17,36 @@ namespace Assignment
 
         public Cone(bool dipped,string option, int scoops, List<Flavour> flavours, List<Topping> toppings) : base(option, scoops, flavours, toppings)
         {
-            this.dipped = dipped;
+            Dipped = dipped;
         }
 
-        public double CalculatePrice()
+        public override double CalculatePrice()
         {
-            return
+            double price = 4.0;
+            if (Dipped) 
+            {
+                price += 2.0;
+            
+            }
+            foreach(var flavour in Flavour)
+            {
+                price += flavour.Price();
+            }
+            foreach(var topping in Topping)
+            {
+                price += topping.Price();
+            }
+            return price;
+
+
+
+
+
         }
 
         public override string ToString()
         {
-            return base.ToString() + $"\tDipped: {dipped}";
+            return base.ToString() + ("\tDipped: " + Dipped );
         }
     }
 }

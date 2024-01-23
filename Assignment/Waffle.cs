@@ -8,7 +8,7 @@ namespace Assignment
 {
     class Waffle
     {
-        public string waffleFlavour { get; set; }
+        public string WaffleFlavour { get; set; }
 
         public Waffle()
         {
@@ -17,17 +17,33 @@ namespace Assignment
 
         public Waffle(string waffleFlavour,string option, int scoops, List<Flavour> flavours, List<Topping> toppings) : base(option, scoops, flavours, toppings)
         {
-            this.waffleFlavour = waffleFlavour;
+            WaffleFlavour = waffleFlavour;
         }
 
-        public double CalculatePrice()
+        public override double CalculatePrice()
         {
-            return
+            double price = 7.0;
+            if(!string.IsNullOrEmpty(WaffleFlavour)) 
+            {
+                price += 3.0;
+            
+            }
+            foreach(var flavour in Flavour)
+            {
+                price += flavour.Price();
+            }
+            foreach(var topping in Topping)
+            {
+                price += topping.Price();
+            }
+
+
+
         }
 
         public override string ToString()
         {
-            return base.ToString() + "waffleFlavour: {waffleFlavour}";
+            return base.ToString() + ("\tWaffleFlavour: " + WaffleFlavour);
         }
 
 
