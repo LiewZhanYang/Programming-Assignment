@@ -28,6 +28,7 @@ namespace Assignment
         public double Price()
         {
             double basePrice = 2.0;
+            return basePrice * Quantity * (IsPremium ? 1.2 : 1.0); 
         }
 
 
