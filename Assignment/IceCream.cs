@@ -35,7 +35,7 @@ namespace Assignment
 
         public override string ToString() 
         {
-            return$"Option : {option}  Scoops : {scoops}  Flavours : {flavours} Toppings : {toppings}"
+            return $"Option : {option}  Scoops : {scoops}  Flavours : {flavours} Toppings : {toppings}";
         
         }
     }
