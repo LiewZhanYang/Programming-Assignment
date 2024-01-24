@@ -62,7 +62,7 @@ namespace Assignment
 
         public override string ToString()
         {
-            return
+            return ("Points: " + Points + "\tPunchCard: " + PunchCard + "\tTier: " + Tier);
         }
 
 
