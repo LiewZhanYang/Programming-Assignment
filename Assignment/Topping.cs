@@ -8,7 +8,7 @@ namespace Assignment
 {
     class Topping
     {
-        public string type { get; set; }
+        public string Type { get; set; }
 
         public Topping()
         {
@@ -17,12 +17,12 @@ namespace Assignment
 
         public Topping(string type)
         {
-            this.type = type;
+            Type = type;
         }
 
         public override string ToString() 
         {
-            return $"Type : {type}";
+            return ("Type: " +  Type);
 
 
         }

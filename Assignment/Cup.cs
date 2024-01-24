@@ -8,6 +8,10 @@ namespace Assignment
 {
     class Cup : IceCream
     {
+
+        private const double typePrice = 2.0;
+        double price = 0;
+
         public Cup() 
         {
             
@@ -20,16 +24,37 @@ namespace Assignment
 
         public override double CalculatePrice()
         {
-            double price = 4.0;
-            foreach(var flavour in Flavour)
+            if (Scoops == 1) 
             {
-                price += flavour.Price();
+                price += 4.0;
+            
             }
-            foreach(var topping in Topping)
+            else if (Scoops == 2)
             {
-                price += topping.Price();
+                price += 5.5;
             }
+            else if (Scoops == 3)
+            {
+                price += 6.5;
+            }
+
+
+            foreach(var flavour in Flavours)
+            {
+                if(flavour.Premium)
+                {
+                    price += 2.0 * flavour.Quantity;
+                }
+            }
+
+            price += Toppings.Count * 1.0;
+
             return price;
+
+
+
+
+
         }
 
         public override string ToString()

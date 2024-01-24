@@ -23,8 +23,8 @@ namespace Assignment
         {
            Option = option;
             Scoops = scoops;
-            Flavours = flavours;
-            Toppings = toppings;
+            Flavours = flavours ?? new List<Flavour>();
+            Toppings = toppings ?? new List<Topping>();
 
         }
 
@@ -32,7 +32,7 @@ namespace Assignment
 
         public override string ToString()
         {
-            return ("Option: " + Option + "\tScoops: " + Scoops}
+            return ("Option: " + Option + "\tScoops: " + Scoops);
         
         }
     }

@@ -25,16 +25,10 @@ namespace Assignment
             Quantity = quantity;
         }
 
-        public double Price()
-        {
-            double basePrice = 2.0;
-            return basePrice * Quantity * (IsPremium ? 1.2 : 1.0); 
-        }
-
-
+        
         public override string ToString() 
         {
-            return $"Type : {type}  Premium : {premium}  Quantity : {quantity}"
+            return $"Type : {Type}  Premium : {Premium}  Quantity : {Quantity}";
         
         }
 

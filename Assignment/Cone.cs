@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Assignment
 {
     class Cone:IceCream
     {
         public bool Dipped { get; set; }
+
+        double price = 0;
+        private const double ChocolateDippedPrice = 2.0;
 
         public Cone()
         {
@@ -22,23 +28,39 @@ namespace Assignment
 
         public override double CalculatePrice()
         {
-            double price = 4.0;
-            if (Dipped) 
+            if (Scoops == 1)
             {
-                price += 2.0;
-            
+                price += 4.0;
+
             }
-            foreach(var flavour in Flavour)
+            else if (Scoops == 2)
             {
-                price += flavour.Price();
+                price += 5.5;
             }
-            foreach(var topping in Topping)
+            else if (Scoops == 3)
             {
-                price += topping.Price();
+                price += 6.5;
             }
+
+            foreach (var flavour in Flavours)
+            {
+                if (flavour.Premium)
+                {
+                    price += 2.0 * flavour.Quantity;
+                }
+
+
+            }
+
+            price += Toppings.Count * 1.0;
+
+
+            if(Dipped)
+            {
+                price += ChocolateDippedPrice;
+            }
+
             return price;
-
-
 
 
 
