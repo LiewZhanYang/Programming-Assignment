@@ -8,12 +8,12 @@ namespace Assignment
 {
     class Customer
     {
-        public string name { get; set; }
-        public int memberId { get; set; }
-        public DateTime dob { get; set; }
-        public Order currentOrder { get; set; }
-        public List<Order> orderHistory { get; set; }
-        public PointCard rewards { get; set; }
+        public string Name { get; set; }
+        public int MemberId { get; set; }
+        public DateTime Dob { get; set; }
+        public Order CurrentOrder { get; set; }
+        public List<Order> OrderHistory { get; set; }
+        public PointCard Rewards { get; set; }
 
         public Customer()
         {
@@ -22,24 +22,27 @@ namespace Assignment
 
         public Customer(string name,int memberID,DateTime dob)
         {
-            this.name = name;
-            this.memberId = memberID;
-            this.dob = dob;
+            Name = name;
+            MemberId = memberID;
+            Dob = dob;
         }
 
         public Order MakeOrder()
         {
-            return
+            CurrentOrder = new Order();
+            OrderHistory.Add(CurrentOrder);
+            return CurrentOrder;
         }
 
         public bool IsBirthday()
         {
-            return
+            return DateTime.Today.Month == Dob.Month && DateTime.Today.Day == Dob.Day;
         }
 
         public override string ToString()
         {
-            return 
+            return ("Name: " + Name + "MemberID: " + MemberId
+                + "DOB: " + Dob + "Points: " + Rewards.Points);
         }
     }
 }

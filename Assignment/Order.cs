@@ -8,10 +8,10 @@ namespace Assignment
 {
     class Order
     {
-        public int id { get; set; }
-        public DateTime timeReceived { get; set; }
-        public DateTime? timeFulfilled { get; set; }
-        public List<IceCream> iceCreamList { get; set; }
+        public int Id { get; set; }
+        public DateTime TimeReceived { get; set; }
+        public DateTime? TimeFulfilled { get; set; }
+        public List<IceCream> IceCreamList { get; set; }
 
         public Order()
         {
@@ -20,37 +20,51 @@ namespace Assignment
 
         public Order(int id,DateTime timeReceived)
         {
-            this.id = id;
-            this.timeReceived = timeReceived;
+            Id = id;
+            TimeReceived = timeReceived;
         }
 
-        public ModifyIceCream(int id)
+        public void ModifyIceCream(int id)
         {
 
         }
 
-        public AddiceCream(IceCream iceCream) 
-        { 
-
+        public void AddiceCream(IceCream iceCream) 
+        {
+            IceCreamList.Add(iceCream);
         
         }
 
-        public DeleteIceCream(int id)
+        public void DeleteIceCream(int index)
         {
+            if(index >= 0 && index < IceCreamList.Count) 
+            {
+                IceCreamList.RemoveAt(index);
+            
+            }
+            else
+            {
+                throw new Exception("The ice cream index is out of range.");
+
+
+            }
 
         }
 
         public double CalculateTotal()
         {
-            return
+            double total = 0;
+            foreach(var icecream in IceCreamList)
+            {
+                total += icecream.CalculatePrice();
+            }
+            return total;
         }
 
         public override string ToString() 
         {
-            return $"Id : {id}  TimeReceived : {timeReceived}" +
-                $"TimeFulfilled : {timeReceived}  IceCreamList :" +
-                $"{iceCreamList}";
-        
+            return ("Id: " + Id + "TimeReceived: " + TimeReceived);
+              
         }
     }
 }
