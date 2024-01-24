@@ -51,15 +51,51 @@ namespace Assignment
 
         }
 
-        public double CalculateTotal()
+        public double CalculateTotal(bool redeemPoints = false)
         {
             double total = 0;
             foreach(var icecream in IceCreamList)
             {
                 total += icecream.CalculatePrice();
             }
+
+            if(redeemPoints && (PointCard.Tier != "Ordinary")
+            {
+                int pointsToRedeem = (int)(total / 0.02);
+                if(PointCard.Points >= pointsToRedeem) 
+                {
+                    bool redeemed = 
+                
+                }
+
+
+
+
+
+
+
+            }
+            
+
+
+
+
+
+
+
+
+
+
             return total;
         }
+
+
+        private int CalculatePointsEarned(double total)
+        {
+            return (int)Math.Floor(total * 0.72);
+        }
+
+
 
         public override string ToString() 
         {

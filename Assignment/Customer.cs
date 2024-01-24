@@ -29,7 +29,7 @@ namespace Assignment
 
         public Order MakeOrder()
         {
-            CurrentOrder = new Order();
+            CurrentOrder = new Order(MemberId,DateTime.Now);
             OrderHistory.Add(CurrentOrder);
             return CurrentOrder;
         }
@@ -38,6 +38,7 @@ namespace Assignment
         {
             return DateTime.Today.Month == Dob.Month && DateTime.Today.Day == Dob.Day;
         }
+
 
         public override string ToString()
         {

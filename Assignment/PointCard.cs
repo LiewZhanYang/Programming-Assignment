@@ -8,35 +8,56 @@ namespace Assignment
 {
     class PointCard
     {
-        public int points { get; set; }
-        public int punchCard { get; set; }
-        public string tier { get; set; }
+        public int Points { get; set; }
+        public int PunchCard { get; set; }
+        public string Tier { get; set; }
 
 
         public PointCard()
         {
-            
+            Tier = "Ordinary";
         }
 
         public PointCard(int points,int punchCard)
         {
-            this.points = points;
-            this.punchCard = punchCard;
+            Points = points;
+            PunchCard = punchCard;
         }
 
-        public void AddPoints(int)
+        public void AddPoints(int pointsToAdd)
         {
+            Points += pointsToAdd;
+
+            if (Points >= 100 && Tier != "Gold")
+            {
+                Tier = "Gold";
+            }
+            else if (Points >= 50 && Tier != "Silver") 
+            {
+                Tier = "Silver";
+
+            }
+        }
+
+        public bool RedeemPoints(int pointsToRedeem)
+        {
+            if (Tier != "Ordinary" && Points >= pointsToRedeem)
+            {
+                Points -= pointsToRedeem;
+                return true;
+                
+            }
+            return false;
             
-        }
-
-        public void RedeemPoints(int)
-        {
-
         }
 
         public void Punch()
         {
-
+            PunchCard++;
+            if (PunchCard > 10)
+            {
+                PunchCard = 0;
+            }
         }
 
         public override string ToString()
