@@ -64,7 +64,7 @@ ReadCustomerCsv(customers);
 void ListAllCustomers(List<Customer> customers)
 {
     Console.WriteLine("{0,-20}{1,-20}{2,-20}{3,-20}{4,-20}{5,-20}",
-        "Name", "Member ID", "DOB", "MemberShipStatus", "MemberShipPoints", "PunchCard"); ;
+        "Name", "Member ID", "DOB", "MemberShipStatus", "MemberShipPoints", "PunchCard"); 
     foreach (Customer customer in customers) 
     {
         Console.WriteLine("{0,-20}{1,-20}{2,-20}{3,-20}{4,-20}{5,-20}",
@@ -79,7 +79,42 @@ void ListAllCustomers(List<Customer> customers)
 }
 
 
+//option 2
 
+void ListAllCurrentOrders(List<Customer> customers)
+{
+    Console.WriteLine("Gold Member Orders: ");
+    Console.WriteLine("{0,-20}{1,-20}{2,-20}","Order ID","Customer","Time Received");
+    foreach (Customer customer in customers.Where(c => c.Rewards.Tier == "Gold"))
+    {
+        foreach(var order in customer.OrderHistory.Where(o => o.TimeFulfilled == null))
+        {
+            Console.WriteLine("{0,-20}{1,-20}{2,-20}", order.Id,customer.Name,order.TimeReceived);
+        }
+    
+    
+    
+    }
+
+    Console.WriteLine("\nRegular Member Orders: ");
+    Console.WriteLine("{0,-20}{1,-20}{2,-20}", "Order ID", "Customer", "Time Received");
+    foreach (Customer customer in customers.Where(c => c.Rewards.Tier != "Gold"))
+    {
+        foreach (var order in customer.OrderHistory.Where(o => o.TimeFulfilled == null))
+        {
+            Console.WriteLine("{0,-20}{1,-20}{2,-20}", order.Id, customer.Name, order.TimeReceived);
+        }
+
+
+
+    }
+}
+
+
+
+// Option 3
+
+void RegisterNew
 
 
 
@@ -165,8 +200,10 @@ while (true)
 
     }
     else if (option == 2) 
-    { 
-    
+    {
+        ListAllCurrentOrders(customers);
+
+
     }
     else if (option == 3) 
     { 
