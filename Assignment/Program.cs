@@ -7,6 +7,7 @@
 
 using Assignment;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 
 
@@ -114,7 +115,45 @@ void ListAllCurrentOrders(List<Customer> customers)
 
 // Option 3
 
-void RegisterNew
+void RegisterNewCustomer(List<Customer> customers)
+{
+    Console.Write("Enter customer's name: ");
+    string name = Console.ReadLine();
+
+    Console.Write("Enter customer's ID number: ");
+    int memberId = Convert.ToInt32(Console.ReadLine());
+
+    Console.Write("Enter customer's date of birth (dd/MM/yyyy): ");
+    DateTime dob = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+    Customer newCustomer = new Customer(name, memberId, dob)
+    {
+        Rewards = new PointCard()
+
+    };
+
+    customers.Add(newCustomer);
+
+    AppendCustomerToCsv(newCustomer);
+
+    Console.WriteLine("Customer registration successful !");
+
+
+}
+
+void AppendCustomerToCsv(Customer customer)
+{
+    string newLine = $"{customer.Name},{ customer.MemberId},{ customer.Dob.ToString("dd/MM/yyyy")}," +
+        $" {customer.Rewards.Tier},{customer.Rewards.Points},{customer.Rewards.PunchCard}";
+
+    using (StreamWriter sw = File.AppendText("customers.csv"))
+    {
+        sw.WriteLine(newLine);
+    }
+
+
+}
+
 
 
 
@@ -206,8 +245,9 @@ while (true)
 
     }
     else if (option == 3) 
-    { 
-    
+    {
+        RegisterNewCustomer(customers);
+
     }
     else if (option == 4)
     {
