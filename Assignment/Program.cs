@@ -156,6 +156,87 @@ void AppendCustomerToCsv(Customer customer)
 
 
 
+// option 4
+
+Customer? SelectCustomer(List<Customer> customers)
+{
+    Console.Write("Enter the ID of the customer: ");
+    int id = Convert.ToInt32(Console.ReadLine());
+
+
+    Customer? selectedCustomer = customers.FirstOrDefault(c => c.MemberId == id);
+    if (selectedCustomer != null)
+    {
+        return selectedCustomer;
+        
+    }
+    else
+    {
+        Console.WriteLine("No customer found with the provided ID.");
+        return null;
+    }
+ 
+
+}
+
+Order CreateCustomerOrder()
+{
+    Order order = new Order();
+
+    bool addMore;
+    do
+    {
+        Console.Write("Enter ice cream option (Cup/Cone/Waffle): ");
+        string option = Console.ReadLine();
+
+        Console.Write("Enter number of scoops: ");
+        int scoops = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter flavour: ");
+        string flavourName = Console.ReadLine();
+
+        Console.Write("Is this a premium flavour? (Y/N): ");
+        bool isPremium = Console.ReadLine().Trim().ToUpper() == "Y";
+
+        int quantity = 1;
+
+        Flavour flavour = new Flavour(flavourName,isPremium,quantity);
+
+        Console.Write("Enter topping: ");
+        string topping = Console.ReadLine();
+
+        IceCream iceCream = null;
+        switch (option.ToLower())
+        {
+            case "cup":
+                List<Flavour> flavours = new List<Flavour> {flavour};
+                List<Topping> toppings = new List<Topping>{new Topping(topping)};
+
+                iceCream = new Cup("Cup", scoops, flavours, toppings);
+                break;
+
+        }
+
+        if (iceCream != null)
+        {
+            order.IceCreamList.Add(iceCream);
+        }
+
+
+        Console.Write("Would you like to add another ice cream to the order? (Y/N): ");
+        addMore = Console.ReadLine().ToUpper() == "Y";
+
+    }while (addMore);
+
+    return order;
+
+
+
+}
+
+
+
+
 
 
 
@@ -251,6 +332,10 @@ while (true)
     }
     else if (option == 4)
     {
+        ListAllCustomers(customers);
+        SelectCustomer(customers);
+        CreateCustomerOrder();
+
 
     }
     else if (option == 5)
