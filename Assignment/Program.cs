@@ -308,8 +308,148 @@ void DisplayOrderCustomer(List<Customer> customers)
 }
 
 
+//option 6
+void ModifyOrderDetails(List<Customer> customers)
+{
+    ListAllCustomers(customers);
+    Customer selectedCustomer = SelectCustomer(customers);
+
+    if(selectedCustomer == null || selectedCustomer.CurrentOrder == null)
+    {
+        Console.WriteLine("Invalid customer or no current order.");
+        return;
 
 
+
+    }
+
+    Console.WriteLine("Current Ice Creams in the Order:");
+    for(int i = 0;i < selectedCustomer.CurrentOrder.IceCreamList.Count;i++)
+    {
+
+        Console.WriteLine($"{i + 1}.{selectedCustomer.CurrentOrder.IceCreamList[i]}");
+
+    }
+
+    Console.WriteLine("Choose an action: " +
+        "\n[1] Modify an Ice"+"\n[2] Add a New Ice Cream"+"\n[3] Delete an Ice Cream");
+
+    int action = Convert.ToInt32(Console.ReadLine());
+
+    switch(action) 
+    {
+        case 1:
+            ModifyIceCream(selectedCustomer.CurrentOrder);
+            break;
+        case 2:
+            IceCream newIceCream = CreateCustomerOrder().IceCreamList.FirstOrDefault();
+            if(newIceCream != null)
+            {
+                selectedCustomer.CurrentOrder.IceCreamList.Add(newIceCream);
+            }
+            break;
+        case 3:
+            DeleteIceCream(selectedCustomer.CurrentOrder);
+            break;
+    
+    
+    
+    }
+
+    Console.WriteLine("Updated Order:");
+    foreach(var iceCream in selectedCustomer.CurrentOrder.IceCreamList)
+    {
+        Console.WriteLine(iceCream);
+    }
+
+
+
+
+
+
+}
+
+void ModifyIceCream(Order order)
+{
+    Console.Write("Select the number of the ice cream to modify: ");
+    int index = Convert.ToInt32(Console.ReadLine()) - 1;
+
+    if(index >= 0 && index < order.IceCreamList.Count)
+    {
+        IceCream iceCreamToModify = order.IceCreamList[index];
+
+        Console.Write("Enter new ice cream option (Cup/Cone/Waffle): ");
+        string option = Console.ReadLine();
+
+        Console.Write("Enter new number of scoops: ");
+        int scoops = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter new flavour: ");
+        string flavourName = Console.ReadLine();
+
+        Console.Write("Is this a premium flavour? (Y/N): ");
+        bool isPremium = Console.ReadLine().Trim().ToUpper() == "Y";
+
+        Console.Write("Enter new topping: ");
+        string toppingName = Console.ReadLine();
+
+        iceCreamToModify.Option = option;
+        iceCreamToModify.Scoops = scoops;
+        iceCreamToModify.Flavours = new List<Flavour> {new Flavour(flavourName, isPremium ,1 )};
+        iceCreamToModify.Toppings = new List<Topping> { new Topping(toppingName) };
+
+
+
+
+    }
+    else
+    {
+        Console.WriteLine("Invalid selection");
+    }
+
+
+
+
+}
+
+
+void DeleteIceCream(Order order)
+{
+    Console.Write("Select the number of the ice cream to delete: ");
+    int index = Convert.ToInt32(Console.ReadLine()) - 1;
+
+    if (index >= 0 && index < order.IceCreamList.Count)
+    {
+        if (order.IceCreamList.Count > 1)
+        {
+            order.IceCreamList.RemoveAt(index);
+
+
+
+        }
+        else
+        {
+            Console.WriteLine("Cannot delete the only ice cream in the order.");
+
+        }
+    }
+    else 
+    {
+        Console.WriteLine("Invalid selection");
+
+    }
+
+
+
+
+
+}
+
+
+
+
+//Advance feature
+//Option 7 
 
 
 
@@ -354,6 +494,7 @@ void displaymenu()
     Console.WriteLine("4 ) Create A Customer's Order");
     Console.WriteLine("5 ) Display Order Details Of A Customer");
     Console.WriteLine("6 ) Modify Order Details");
+    Console.WriteLine("7 ) ");
     Console.WriteLine("0 EXIT");
 
 
@@ -428,7 +569,12 @@ while (true)
     }
     else if (option == 6)
     {
-
+        ModifyOrderDetails(customers);
+    }
+    else if (option == 7) 
+    {
+        
+    
     }
 
 
