@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assignment", "Assignment\Assignment.csproj", "{144D9841-7317-4FDF-98C4-0269EF339CEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRG2Assignment", "..\..\..\..\..\..\..\Downloads\PRG2Assignment-main\PRG2Assignment-main\T02_Group01_PRG2Assignment\T02_Group01_PRG2Assignment\PRG2Assignment.csproj", "{BE7AEB02-E3DF-48E3-B0B2-608808C1A66F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{144D9841-7317-4FDF-98C4-0269EF339CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{144D9841-7317-4FDF-98C4-0269EF339CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{144D9841-7317-4FDF-98C4-0269EF339CEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE7AEB02-E3DF-48E3-B0B2-608808C1A66F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE7AEB02-E3DF-48E3-B0B2-608808C1A66F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE7AEB02-E3DF-48E3-B0B2-608808C1A66F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE7AEB02-E3DF-48E3-B0B2-608808C1A66F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

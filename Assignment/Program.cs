@@ -10,6 +10,112 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 
+//test the data from the csv file
+
+var flavours = ReadFlavoursCsv("flavours.csv");
+
+List<Flavour> ReadFlavoursCsv(string filePath)
+{
+    var flavours = new List<Flavour>();
+    var lines = File.ReadAllLines(filePath);
+
+    foreach (var line in lines.Skip(1)) // Skip the header line
+    {
+        var parts = line.Split(',');
+        var flavourName = parts[0];
+        var cost = double.Parse(parts[1]);
+
+        var flavour = new Flavour
+        {
+            Type = flavourName,
+            Premium = cost > 0, // If the cost is greater than 0, it's considered a premium flavour
+            // Assuming Quantity is set elsewhere, as it's not part of the CSV
+        };
+
+        flavours.Add(flavour);
+    }
+
+    return flavours;
+}
+
+var toppings = ReadToppingsCsv("toppings.csv");
+
+List<Topping> ReadToppingsCsv(string filePath)
+{
+    var toppings = new List<Topping>();
+    var lines = File.ReadAllLines(filePath);
+
+    foreach (var line in lines.Skip(1)) // Skip the CSV header
+    {
+        var parts = line.Split(',');
+        if (parts.Length >= 2)
+        {
+            var type = parts[0].Trim(); // Get the topping type
+            // Optionally handle the cost if needed
+
+            toppings.Add(new Topping(type));
+        }
+    }
+
+    return toppings;
+}
+
+var optionsDict = ReadOptionsCsv("options.csv");
+
+Dictionary<string, double> ReadOptionsCsv(string filePath)
+{
+    var optionsDict = new Dictionary<string, double>();
+    var lines = File.ReadAllLines(filePath);
+
+    foreach (var line in lines.Skip(1)) // Skip the CSV header
+    {
+        var parts = line.Split(',');
+        var key = $"{parts[0].Trim()}-{parts[1].Trim()}-{parts[2].Trim()}-{parts[3].Trim()}"; // Composite key
+        var cost = double.Parse(parts[4]);
+
+        optionsDict[key] = cost;
+    }
+
+    return optionsDict;
+}
+
+
+void DisplayFlavours(List<Flavour> flavours)
+{
+    Console.WriteLine("Flavours:");
+    foreach (var flavour in flavours)
+    {
+        Console.WriteLine($"Type: {flavour.Type}, Premium: {flavour.Premium}");
+    }
+}
+
+//DisplayFlavours(flavours);
+
+void DisplayToppings(List<Topping> toppings)
+{
+    Console.WriteLine("Toppings:");
+    foreach (var topping in toppings)
+    {
+        Console.WriteLine($"Type: {topping.Type}");
+    }
+}
+
+//DisplayToppings(toppings);
+
+void DisplayOptions(Dictionary<string, double> optionsDict)
+{
+    Console.WriteLine("Options:");
+    foreach (var option in optionsDict)
+    {
+        Console.WriteLine($"Key: {option.Key}, Cost: {option.Value}");
+    }
+}
+
+//DisplayOptions(optionsDict);
+
+
+
+
 
 // option 1
 
@@ -451,7 +557,19 @@ void DeleteIceCream(Order order)
 //Advance feature
 //Option 7 
 
+void ProcessAndCheckOutOrder()
+{
+    if (goldMemberOrders.Count == 0 && regularOrders.Count == 0) 
+    {
+        Console.WriteLine("There are ");
 
+
+
+    }
+
+
+
+}
 
 
 
