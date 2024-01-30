@@ -18,7 +18,7 @@ namespace Assignment
         public int Id { get; set; }
         public DateTime TimeReceived { get; set; }
         public DateTime? TimeFulfilled { get; set; }
-        public List<IceCream> IceCreamList { get; set; }
+        public List<IceCream> IceCreamList { get; set; } = new List<IceCream>();
 
         public Order()
         {

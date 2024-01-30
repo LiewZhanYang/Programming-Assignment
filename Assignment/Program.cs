@@ -234,6 +234,40 @@ Order CreateCustomerOrder()
 
 }
 
+List<Order> goldMemberOrders = new List<Order>();
+List<Order> regularOrders = new List<Order>();
+
+void ProcessOrder(Customer customer, Order order)
+{
+    customer.CurrentOrder = order;
+    customer.OrderHistory.Add(order);
+
+    if (customer.Rewards.Tier == "Gold")
+    {
+        goldMemberOrders.Add(order);
+
+
+
+    }
+    else
+    {
+        regularOrders.Add(order);
+
+    }
+
+    Console.WriteLine("Order has been made successfully!");
+
+
+
+
+
+
+
+}
+
+
+//option 5 
+
 
 
 
@@ -333,10 +367,21 @@ while (true)
     else if (option == 4)
     {
         ListAllCustomers(customers);
-        SelectCustomer(customers);
-        CreateCustomerOrder();
-
-
+        Customer selectedCustomer = SelectCustomer(customers);
+        if (selectedCustomer != null) 
+        {
+            Order newOrder = CreateCustomerOrder();
+            ProcessOrder(selectedCustomer, newOrder);
+        
+        }
+        else
+        {
+            Console.WriteLine("Customer not found.");
+        }
+        
+        
+        
+       
     }
     else if (option == 5)
     {
