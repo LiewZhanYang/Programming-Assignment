@@ -268,6 +268,45 @@ void ProcessOrder(Customer customer, Order order)
 
 //option 5 
 
+void DisplayOrderCustomer(List<Customer> customers)
+{
+    ListAllCustomers(customers);
+
+    Console.Write("Select a customer id you want to retrived Order History: ");
+    int id = Convert.ToInt32(Console.ReadLine());
+
+
+    Customer selectedCustomer = customers.FirstOrDefault(c => c.MemberId == id);
+
+
+    if(selectedCustomer != null)
+    {
+        Console.WriteLine($"Order for {selectedCustomer.Name}:");
+        foreach (var order in selectedCustomer.OrderHistory)
+        {
+            Console.WriteLine($"Order ID: {order.Id}, Received: {order.TimeReceived}");
+        }
+
+
+      
+    }
+    else 
+    {
+        Console.WriteLine("Customer not found.");
+
+    }
+
+    
+
+
+
+
+
+
+
+
+}
+
 
 
 
@@ -385,7 +424,7 @@ while (true)
     }
     else if (option == 5)
     {
-
+        DisplayOrderCustomer(customers);
     }
     else if (option == 6)
     {
