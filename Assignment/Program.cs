@@ -330,23 +330,29 @@ void AppendCustomerToCsv(Customer customer)
 
 // option 4
 
-void CreateOrder(List<Customer>customers, Queue<Order> goldQueue, Queue<Order> ordinaryQueue, List<Flavour> flavours, List<Topping> toppings)
+void CreateOrder(List<Customer> customers, Queue<Order> goldQueue, Queue<Order> ordinaryQueue, List<Flavour> flavours, List<Topping> toppings)
 {
+    // Display all registered customers for selection.
     ListAllCustomers(customers);
 
+    // Variables for customer selection and validation.
     int memberID;
     Customer customer = null;
 
+    // Loop until a valid customer is selected or created.
     while (true)
     {
         Console.Write("Enter Customer's MemberID: ");
         if (int.TryParse(Console.ReadLine(), out memberID))
         {
+            // Find customer by MemberID.
             customer = customers.FirstOrDefault(c => c.MemberId == memberID);
             if (customer != null)
             {
+                // Check if customer already has an ongoing order.
                 if (customer.CurrentOrder == null)
                 {
+                    // Break the loop if no ongoing order is found.
                     break;
                 }
                 else
@@ -365,27 +371,32 @@ void CreateOrder(List<Customer>customers, Queue<Order> goldQueue, Queue<Order> o
         }
     }
 
-
+    // Start a new order for the selected customer.
     customer.MakeOrder();
     bool addMoreIceCream;
 
+    // Loop to add ice creams to the order.
     do
     {
+        // Select base option for the ice cream.
         Console.Write("\nEnter IceCream Option (Cup / Cone / Waffle): ");
         string option = Console.ReadLine();
 
         int scoops;
+        // Validate number of scoops.
         do
         {
             Console.Write("Number of Scoops (max 3): ");
         } while (!int.TryParse(Console.ReadLine(), out scoops) || scoops < 1 || scoops > 3);
 
+        // Display available flavours.
         Console.WriteLine("\nRegular :");
         flavours.Where(f => !f.Premium).ToList().ForEach(f => Console.WriteLine(f.Type));
 
         Console.WriteLine("\nPremium :");
         flavours.Where(f => f.Premium).ToList().ForEach(f => Console.WriteLine(f.Type));
 
+        // Select flavours based on the number of scoops.
         List<Flavour> selectedFlavours = new List<Flavour>();
         for (int i = 0; i < scoops; i++)
         {
@@ -403,10 +414,12 @@ void CreateOrder(List<Customer>customers, Queue<Order> goldQueue, Queue<Order> o
             }
         }
 
+        // Display available toppings.
         Console.WriteLine("\nToppings:");
         Console.WriteLine("-----------");
         toppings.ForEach(t => Console.WriteLine(t.Type));
 
+        // Select toppings. 'X' to stop adding more.
         List<Topping> selectedToppings = new List<Topping>();
         string toppingInput;
         do
@@ -427,48 +440,50 @@ void CreateOrder(List<Customer>customers, Queue<Order> goldQueue, Queue<Order> o
             }
         } while (toppingInput.ToUpper() != "X");
 
-        // Inside your do-while loop in the CreateOrder method
-
-        IceCream iceCream = null; // Declare iceCream as null initially
+        // Create and add the ice cream to the customer's current order based on selected options.
+        IceCream iceCream = null; // Initialize the ice cream object as null.
         switch (option.ToLower())
         {
             case "cup":
                 iceCream = new Cup(scoops, selectedFlavours, selectedToppings);
                 break;
             case "cone":
+                // Ask if the cone is dipped in chocolate.
                 Console.Write("Want cone dipped? (Y/N): ");
                 string dippedResponse = Console.ReadLine();
                 bool isDipped = dippedResponse.Equals("Y", StringComparison.OrdinalIgnoreCase);
-                // Assuming Cone constructor similar to Cup
-                iceCream = new Cone(scoops, selectedFlavours, selectedToppings,isDipped);
+                iceCream = new Cone(scoops, selectedFlavours, selectedToppings, isDipped);
                 break;
             case "waffle":
+                // Enter flavour for the waffle base.
                 Console.Write("Enter Waffle Flavour: ");
                 string waffleFlavour = Console.ReadLine();
-                // Assuming Waffle constructor similar to Cup
-                iceCream = new Waffle(scoops, selectedFlavours, selectedToppings,waffleFlavour);
+                iceCream = new Waffle(scoops, selectedFlavours, selectedToppings, waffleFlavour);
                 break;
             default:
-                Console.WriteLine("Invalid option.");
+                Console.WriteLine("Invalid option. Please select 'Cup', 'Cone', or 'Waffle'.");
                 break;
         }
 
+
         if (iceCream != null)
         {
+            // Add the created ice cream to the customer's current order.
             customer.CurrentOrder.AddiceCream(iceCream);
+            // Ask if the user wants to add more ice creams to the order.
             Console.Write("Add another ice cream to the order? (Y/N): ");
             addMoreIceCream = Console.ReadLine().ToUpper() == "Y";
         }
         else
         {
-            // Handle the case when an invalid option is entered, and iceCream remains null
+            // If an invalid option was entered, inform the user and set the flag to stop adding more ice creams.
             Console.WriteLine("Please enter a valid ice cream option.");
-            // Set addMoreIceCream to false to exit the loop
             addMoreIceCream = false;
         }
 
-    } while (addMoreIceCream);
+    } while (addMoreIceCream); // Continue adding ice creams until the user decides to stop.
 
+    // Add the order to the appropriate queue based on the customer's membership tier.
     if (customer.Rewards.Tier.ToLower() == "gold")
     {
         goldQueue.Enqueue(customer.CurrentOrder);
@@ -478,10 +493,9 @@ void CreateOrder(List<Customer>customers, Queue<Order> goldQueue, Queue<Order> o
         ordinaryQueue.Enqueue(customer.CurrentOrder);
     }
 
-
+    // Confirm order creation success.
     Console.WriteLine("Order has been made successfully");
 }
-
 
 List<Order> goldMemberOrders = new List<Order>();
 List<Order> regularOrders = new List<Order>();
@@ -1009,7 +1023,7 @@ void ProcessOrderAndCheckout(List<Customer> customers, Dictionary<string, double
     }
 
     Console.WriteLine($"Total Bill: ${totalBill:0.00}");
-    Console.WriteLine("Press any key to make payment...");
+    Console.WriteLine("Press 'Enter' to pay");
     Console.ReadKey();
 
     // Updating Customer Records
