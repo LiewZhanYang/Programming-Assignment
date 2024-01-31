@@ -26,44 +26,24 @@ namespace Assignment
             
         }
 
-        public Waffle(string waffleFlavour,string option, int scoops, List<Flavour> flavours, List<Topping> toppings) : base(option, scoops, flavours, toppings)
+        public Waffle(int scoops, List<Flavour> flavours, List<Topping> toppings, string waffleFlavour) : base("Waffle", scoops, flavours, toppings)
         {
             WaffleFlavour = waffleFlavour;
         }
 
-        public override double CalculatePrice()
+        public override double CalculatePrice(Dictionary<string, double> optionsDict,
+                                          List<Flavour> allFlavours,
+                                          List<Topping> allToppings)
         {
-            if (Scoops == 1)
-            {
-                price += 4.0;
+            double price = 0;
+            string key = $"Waffle-{Scoops}--{WaffleFlavour}"; // Construct the key based on waffle properties
 
-            }
-            else if (Scoops == 2)
+            if (optionsDict.TryGetValue(key, out double basePrice))
             {
-                price += 5.5;
-            }
-            else if (Scoops == 3)
-            {
-                price += 6.5;
+                price += basePrice;
             }
 
-
-            if (!string.IsNullOrEmpty(WaffleFlavour)) 
-            {
-                price += 3.0;
-            
-            }
-
-            foreach (var flavour in Flavours)
-            {
-                if (flavour.Premium)
-                {
-                    price += 2.0 * flavour.Quantity;
-                }
-            }
-
-
-            price += Toppings.Count * 1.0;
+            price += CalculateFlavoursPrice(allFlavours) + CalculateToppingsPrice(allToppings);
 
             return price;
 

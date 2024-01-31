@@ -35,7 +35,33 @@ namespace Assignment
 
         }
 
-        public abstract double CalculatePrice();
+        public abstract double CalculatePrice(Dictionary<string, double> optionsDict,
+                                      List<Flavour> allFlavours,
+                                      List<Topping> allToppings);
+
+        public double CalculateFlavoursPrice(List<Flavour> allFlavours)
+        {
+            double price = 0;
+            foreach (var flavour in Flavours)
+            {
+                var matchingFlavour = allFlavours.FirstOrDefault(f => f.Type == flavour.Type);
+                if (matchingFlavour != null && matchingFlavour.Premium)
+                {
+                    price += 2.0 * flavour.Quantity; // Assuming premium flavours add $2 per quantity
+                }
+            }
+            return price;
+        }
+
+        public double CalculateToppingsPrice(List<Topping> allToppings)
+        {
+            // Assuming each topping adds a fixed cost (e.g., $1)
+            return Toppings.Count * 1.0;
+        }
+
+
+
+
 
         public override string ToString()
         {

@@ -58,29 +58,29 @@ namespace Assignment
 
         }
 
-        public double CalculateTotal(PointCard pointCard, bool redeemPoints = false)
+        public double CalculateTotal(Dictionary<string, double> optionsDict, List<Flavour> allFlavours, List<Topping> allToppings, PointCard pointCard, bool redeemPoints = false)
         {
-            double total = IceCreamList.Sum(IceCream => IceCream.CalculatePrice());
+            double total = 0;
 
-            if(redeemPoints && (pointCard.Tier != "Ordinary"))
+            foreach (var iceCream in IceCreamList)
+            {
+                // Pass the required parameters to the CalculatePrice method
+                total += iceCream.CalculatePrice(optionsDict, allFlavours, allToppings);
+            }
+
+            if (pointCard != null && redeemPoints && pointCard.Tier != "Ordinary")
             {
                 int pointsToRedeem = (int)(total / 0.02);
-                if(pointCard.Points >= pointsToRedeem) 
+                if (pointCard.Points >= pointsToRedeem)
                 {
                     bool redeemed = pointCard.RedeemPoints(pointsToRedeem);
-                    
-                    if(redeemed) 
+                    if (redeemed)
                     {
-                        total -= pointsToRedeem * 0.02;
-
-
-
+                        total -= pointsToRedeem * 0.02; // Deduct the amount redeemed from the total
                     }
-                
                 }
-
             }
-            
+
             return total;
         }
 

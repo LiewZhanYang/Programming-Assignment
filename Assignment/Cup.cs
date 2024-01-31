@@ -16,7 +16,7 @@ namespace Assignment
     class Cup : IceCream
     {
 
-        private const double typePrice = 2.0;
+        
         double price = 0;
 
         public Cup() 
@@ -24,41 +24,31 @@ namespace Assignment
             
         }
 
-        public Cup(string option,int scoops,List<Flavour>flavours,List<Topping>toppings) : base(option,scoops,flavours,toppings)
+        public Cup(int scoops,List<Flavour>flavours,List<Topping>toppings) : base("Cup",scoops,flavours,toppings)
         {
             
         }
 
-        public override double CalculatePrice()
+        public override double CalculatePrice(Dictionary<string, double> optionsDict,
+                                      List<Flavour> allFlavours,
+                                      List<Topping> allToppings)
         {
-            if (Scoops == 1) 
+            double price = 0;
+            string key = $"Cup-{Scoops}---"; // Construct the key based on cup properties
+
+            // Fetch the base price for the cup from the options dictionary
+            if (optionsDict.TryGetValue(key, out double basePrice))
             {
-                price += 4.0;
-            
-            }
-            else if (Scoops == 2)
-            {
-                price += 5.5;
-            }
-            else if (Scoops == 3)
-            {
-                price += 6.5;
+                price += basePrice;
             }
 
+            // Add the price for premium flavours
+            price += CalculateFlavoursPrice(allFlavours);
 
-            foreach(var flavour in Flavours)
-            {
-                if(flavour.Premium)
-                {
-                    price += 2.0 * flavour.Quantity;
-                }
-            }
-
-            price += Toppings.Count * 1.0;
+            // Add price for toppings
+            price += CalculateToppingsPrice(allToppings);
 
             return price;
-
-
 
 
 
