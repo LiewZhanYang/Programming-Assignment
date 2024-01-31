@@ -128,20 +128,25 @@ void DisplayOptions(Dictionary<string, double> optionsDict)
 
 // option 1
 
+// Create an empty list to store Customer objects
 List<Customer> customers = new List<Customer>();
 
+// Read data from a CSV file and populate the 'customers' list
 void ReadCustomerCsv(List<Customer> customers)
 {
-    using(StreamReader sr = new StreamReader("customers.csv"))
+    using (StreamReader sr = new StreamReader("customers.csv"))
     {
-
+        // Skip the header line in the CSV file
         sr.ReadLine();
 
         string line;
-        while((line = sr.ReadLine()) != null)
+        // Read each line of the CSV file
+        while ((line = sr.ReadLine()) != null)
         {
+            // Split the line into individual data elements
             string[] data = line.Split(',');
 
+            // Extract customer data from the CSV
             string name = data[0];
             int memberId = int.Parse(data[1]);
             DateTime dob = DateTime.ParseExact(data[2], "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -149,149 +154,177 @@ void ReadCustomerCsv(List<Customer> customers)
             int points = int.Parse(data[4]);
             int punchCard = int.Parse(data[5]);
 
-
-            PointCard rewards = new PointCard(points,punchCard)
+            // Create a PointCard object for customer rewards
+            PointCard rewards = new PointCard(points, punchCard)
             {
                 Tier = tier
-
             };
 
+            // Create a Customer object and set its properties
             Customer customer = new Customer(name, memberId, dob)
             {
                 Rewards = rewards,
                 OrderHistory = new List<Order>()
-
-
-
             };
 
+            // Add the customer to the 'customers' list
             customers.Add(customer);
-
-
-
         }
-
     }
-
 }
 
+// Call the 'ReadCustomerCsv' method to populate the 'customers' list
 ReadCustomerCsv(customers);
 
+// Display a table of customer information
 void ListAllCustomers(List<Customer> customers)
 {
+    // Display column headers
     Console.WriteLine("{0,-20}{1,-20}{2,-20}{3,-20}{4,-20}{5,-20}",
-        "Name", "Member ID", "DOB", "MemberShipStatus", "MemberShipPoints", "PunchCard"); 
-    foreach (Customer customer in customers) 
+        "Name", "Member ID", "DOB", "Membership Status", "Membership Points", "PunchCard");
+
+    // Iterate through the 'customers' list and display each customer's information
+    foreach (Customer customer in customers)
     {
+        // Display customer details in a formatted table
         Console.WriteLine("{0,-20}{1,-20}{2,-20}{3,-20}{4,-20}{5,-20}",
-            customer.Name, customer.MemberId, customer.Dob.ToString("dd/MM/yyyy")
-            ,customer.Rewards.Tier ,customer.Rewards.Points,customer.Rewards.PunchCard);
-
+            customer.Name, customer.MemberId, customer.Dob.ToString("dd/MM/yyyy"),
+            customer.Rewards.Tier, customer.Rewards.Points, customer.Rewards.PunchCard);
     }
-
-
-
-
 }
+
 
 
 //option 2
 
-void ListAllCurrentOrders(Queue<Order> goldQueue,Queue<Order> ordinaryQueue )
+// Display current orders for Gold and Regular members
+void ListAllCurrentOrders(Queue<Order> goldQueue, Queue<Order> ordinaryQueue)
 {
     Console.WriteLine();
     Console.WriteLine("Gold Member Orders: ");
-    foreach (Order Order in goldQueue)
-    {
-        Console.WriteLine($"Order Time: {Order.TimeReceived}");
 
-        foreach (IceCream iceCream in Order.IceCreamList)
+    // Iterate through Gold member orders
+    foreach (Order order in goldQueue)
+    {
+        // Display order time
+        Console.WriteLine($"Order Time: {order.TimeReceived}");
+
+        // Iterate through each ice cream in the order
+        foreach (IceCream iceCream in order.IceCreamList)
         {
-            // Simplified display logic for ice cream details
+            // Display ice cream details
             Console.WriteLine($"Ice Cream Option: {iceCream.Option}, Scoops: {iceCream.Scoops}");
+
+            // Iterate through ice cream flavors
             foreach (var flavour in iceCream.Flavours)
             {
+                // Display flavor details
                 Console.WriteLine($"Flavour: {flavour.Type}, Premium: {flavour.Premium}");
             }
+
+            // Iterate through ice cream toppings
             foreach (var topping in iceCream.Toppings)
             {
+                // Display topping details
                 Console.WriteLine($"Topping: {topping.Type}");
             }
 
-            Console.WriteLine();
+            Console.WriteLine(); // Empty line for separation
         }
-        Console.WriteLine();
+        Console.WriteLine(); // Empty line for separation between orders
     }
 
     Console.WriteLine("\nRegular Member Orders: ");
-    foreach (Order Order in ordinaryQueue)
-    {
-        Console.WriteLine($"Order Time: {Order.TimeReceived}");
 
-        foreach (IceCream iceCream in Order.IceCreamList)
+    // Iterate through Regular member orders
+    foreach (Order order in ordinaryQueue)
+    {
+        // Display order time
+        Console.WriteLine($"Order Time: {order.TimeReceived}");
+
+        // Iterate through each ice cream in the order
+        foreach (IceCream iceCream in order.IceCreamList)
         {
-            // Simplified display logic for ice cream details
+            // Display ice cream details
             Console.WriteLine($"Ice Cream Option: {iceCream.Option}, Scoops: {iceCream.Scoops}");
+
+            // Iterate through ice cream flavors
             foreach (var flavour in iceCream.Flavours)
             {
+                // Display flavor details
                 Console.WriteLine($"Flavour: {flavour.Type}, Premium: {flavour.Premium}");
             }
+
+            // Iterate through ice cream toppings
             foreach (var topping in iceCream.Toppings)
             {
+                // Display topping details
                 Console.WriteLine($"Topping: {topping.Type}");
             }
 
-            Console.WriteLine();
+            Console.WriteLine(); // Empty line for separation
         }
-        Console.WriteLine();
+        Console.WriteLine(); // Empty line for separation between orders
     }
 }
-
-
-
 
 
 
 // Option 3
 
+// Register a new customer and add them to the 'customers' list and CSV file
 void RegisterNewCustomer(List<Customer> customers)
 {
+    // Prompt for customer information
     Console.Write("Enter customer's name: ");
     string name = Console.ReadLine();
-
-    Console.Write("Enter customer's ID number: ");
-    int memberId = Convert.ToInt32(Console.ReadLine());
-
+    int memberId;
+    while (true)
+    {
+        try
+        {
+            Console.Write("Enter customer's ID number: ");
+            memberId = Convert.ToInt32(Console.ReadLine());
+            break;
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Please Enter a valid ID number");
+        }
+    }
+    
     Console.Write("Enter customer's date of birth (dd/MM/yyyy): ");
     DateTime dob = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
+    // Create a new Customer object with provided information and an empty rewards card
     Customer newCustomer = new Customer(name, memberId, dob)
     {
         Rewards = new PointCard()
-
     };
 
+    // Add the new customer to the 'customers' list
     customers.Add(newCustomer);
 
+    // Append customer information to the CSV file
     AppendCustomerToCsv(newCustomer);
 
-    Console.WriteLine("Customer registration successful !");
-
-
+    Console.WriteLine("Customer registration successful!");
 }
 
+// Append customer information to a CSV file
 void AppendCustomerToCsv(Customer customer)
 {
-    string newLine = $"{customer.Name},{ customer.MemberId},{ customer.Dob.ToString("dd/MM/yyyy")}," +
-        $" {customer.Rewards.Tier},{customer.Rewards.Points},{customer.Rewards.PunchCard}";
+    // Create a new CSV line from customer details
+    string newLine = $"{customer.Name},{customer.MemberId},{customer.Dob.ToString("dd/MM/yyyy")}," +
+        $"{customer.Rewards.Tier},{customer.Rewards.Points},{customer.Rewards.PunchCard}";
 
+    // Append the new line to the CSV file
     using (StreamWriter sw = File.AppendText("C:\\Users\\User\\Documents\\Ngee Ann Poly Module\\Sem 2 Ngee Ann IT courses modules\\a Programming 2\\Assignment\\Assignment\\Assignment\\Assignment\\customers.csv"))
     {
         sw.WriteLine(newLine);
     }
-
-
 }
+
 
 
 
@@ -760,11 +793,6 @@ void ModifyOrderDetails(List<Customer> customers)
     {
         Console.WriteLine(iceCream);
     }
-
-
-
-
-
 
 }
 
