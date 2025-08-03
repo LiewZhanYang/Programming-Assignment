@@ -1,11 +1,4 @@
-﻿//==========================================================
-// Student Number : S10259432
-// Student Name : Liew Zhan Yang
-// Partner Number : S10257777
-// Partner Name : Amicus Lee Ming Ge
-//==========================================================
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,11 +8,13 @@ namespace Assignment
     {
         private readonly DataManager dataManager;
         private readonly CustomerService customerService;
+        private readonly MenuDisplay menuDisplay;
 
         public OrderService(DataManager dataManager)
         {
             this.dataManager = dataManager;
             this.customerService = new CustomerService(dataManager);
+            this.menuDisplay = new MenuDisplay();
         }
 
         public void ListAllCurrentOrders()
@@ -103,31 +98,34 @@ namespace Assignment
         {
             Console.WriteLine("\n=== PROCESS ORDER AND CHECKOUT ===");
 
+            Order orderToProcess = null;
+            Customer customer = null;
+
             // Process Gold queue first
             if (dataManager.GoldQueue.Any())
             {
-                Order order = dataManager.GoldQueue.Dequeue();
-                Customer customer = dataManager.Customers.FirstOrDefault(c => c.CurrentOrder?.Id == order.Id);
-                if (customer != null)
-                {
-                    ProcessCustomerOrder(customer, order);
-                    return;
-                }
+                orderToProcess = dataManager.GoldQueue.Dequeue();
+                customer = dataManager.Customers.FirstOrDefault(c => c.CurrentOrder?.Id == orderToProcess.Id);
             }
-
             // Then process ordinary queue
-            if (dataManager.OrdinaryQueue.Any())
+            else if (dataManager.OrdinaryQueue.Any())
             {
-                Order order = dataManager.OrdinaryQueue.Dequeue();
-                Customer customer = dataManager.Customers.FirstOrDefault(c => c.CurrentOrder?.Id == order.Id);
-                if (customer != null)
-                {
-                    ProcessCustomerOrder(customer, order);
-                    return;
-                }
+                orderToProcess = dataManager.OrdinaryQueue.Dequeue();
+                customer = dataManager.Customers.FirstOrDefault(c => c.CurrentOrder?.Id == orderToProcess.Id);
+            }
+            else
+            {
+                Console.WriteLine("No orders in queue to process.");
+                return;
             }
 
-            Console.WriteLine("No orders in queue to process.");
+            if (customer == null)
+            {
+                Console.WriteLine("Customer not found for this order.");
+                return;
+            }
+
+            ProcessCustomerOrder(customer, orderToProcess);
         }
 
         public void DisplayMonthlyCharges()
@@ -260,7 +258,7 @@ namespace Assignment
                 Console.WriteLine($"  - {flavour.Type}");
             }
 
-            Console.WriteLine("Premium Flavours:");
+            Console.WriteLine("Premium Flavours (+$2.00):");
             var premiumFlavours = dataManager.AllFlavours.Where(f => f.Premium).ToList();
             foreach (var flavour in premiumFlavours)
             {
@@ -294,7 +292,7 @@ namespace Assignment
 
         private List<Topping> SelectToppings()
         {
-            Console.WriteLine("\nAvailable Toppings:");
+            Console.WriteLine("\nAvailable Toppings (+$1.00 each):");
             foreach (var topping in dataManager.AllToppings)
             {
                 Console.WriteLine($"  - {topping.Type}");
@@ -322,7 +320,7 @@ namespace Assignment
                 }
                 else
                 {
-                    Console.WriteLine("Invalid topping. Please try again.");
+                    Console.WriteLine("Invalid topping. Please try again or enter 'X' to finish.");
                 }
             }
 
