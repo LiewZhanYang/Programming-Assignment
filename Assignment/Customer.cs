@@ -1,19 +1,9 @@
-﻿//==========================================================
-// Student Number : S10259432
-// Student Name : Liew Zhan Yang
-// Partner Number : S10257777
-// Partner Name : Amicus Lee Ming Ge
-//==========================================================
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assignment
 {
-    class Customer
+    public class Customer  // Added 'public'
     {
         public string Name { get; set; }
         public int MemberId { get; set; }
@@ -24,20 +14,20 @@ namespace Assignment
 
         public Customer()
         {
-            
+            OrderHistory = new List<Order>();
         }
 
-        public Customer(string name,int memberID,DateTime dob)
+        public Customer(string name, int memberID, DateTime dob)
         {
             Name = name;
             MemberId = memberID;
             Dob = dob;
+            OrderHistory = new List<Order>();
         }
 
         public Order MakeOrder()
         {
-            CurrentOrder = new Order(MemberId,DateTime.Now);
-            OrderHistory.Add(CurrentOrder);
+            CurrentOrder = new Order(MemberId, DateTime.Now);
             return CurrentOrder;
         }
 
@@ -46,11 +36,9 @@ namespace Assignment
             return DateTime.Today.Month == Dob.Month && DateTime.Today.Day == Dob.Day;
         }
 
-
         public override string ToString()
         {
-            return ("Name: " + Name + "MemberID: " + MemberId
-                + "DOB: " + Dob + "Points: " + Rewards.Points);
+            return $"Name: {Name}, MemberID: {MemberId}, DOB: {Dob:dd/MM/yyyy}, Points: {Rewards?.Points ?? 0}";
         }
     }
 }

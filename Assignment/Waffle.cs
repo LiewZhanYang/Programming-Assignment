@@ -1,29 +1,15 @@
-﻿//==========================================================
-// Student Number : S10259432
-// Student Name : Liew Zhan Yang
-// Partner Number : S10257777
-// Partner Name : Amicus Lee Ming Ge
-//==========================================================
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace Assignment
 {
-    class Waffle : IceCream
+    public class Waffle : IceCream  // Added 'public'
     {
         public string WaffleFlavour { get; set; }
 
-        double price = 3;
-
-
         public Waffle()
         {
-            
+
         }
 
         public Waffle(int scoops, List<Flavour> flavours, List<Topping> toppings, string waffleFlavour) : base("Waffle", scoops, flavours, toppings)
@@ -36,7 +22,7 @@ namespace Assignment
                                           List<Topping> allToppings)
         {
             double price = 0;
-            string key = $"Waffle-{Scoops}--{WaffleFlavour}"; // Construct the key based on waffle properties
+            string key = $"Waffle-{Scoops}--{WaffleFlavour}";
 
             if (optionsDict.TryGetValue(key, out double basePrice))
             {
@@ -46,16 +32,11 @@ namespace Assignment
             price += CalculateFlavoursPrice(allFlavours) + CalculateToppingsPrice(allToppings);
 
             return price;
-
         }
 
         public override string ToString()
         {
             return base.ToString() + ("\tWaffleFlavour: " + WaffleFlavour);
         }
-
-
-
-
     }
 }
