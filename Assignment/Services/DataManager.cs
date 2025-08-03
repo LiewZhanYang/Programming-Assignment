@@ -29,9 +29,9 @@ namespace Assignment
 
         private void LoadAllData()
         {
-            AllFlavours = ReadFlavoursCsv("flavours.csv");
-            AllToppings = ReadToppingsCsv("toppings.csv");
-            OptionsDict = ReadOptionsCsv("options.csv");
+            AllFlavours = ReadFlavoursCsv(AppConstants.FLAVOURS_FILE);
+            AllToppings = ReadToppingsCsv(AppConstants.TOPPINGS_FILE);
+            OptionsDict = ReadOptionsCsv(AppConstants.OPTIONS_FILE);
             Customers = new List<Customer>();
             ReadCustomerCsv();
             GoldQueue = new Queue<Order>();
@@ -145,17 +145,15 @@ namespace Assignment
 
         private void ReadCustomerCsv()
         {
-            const string filePath = "customers.csv";
-
-            if (!File.Exists(filePath))
+            if (!File.Exists(AppConstants.CUSTOMERS_FILE))
             {
-                Console.WriteLine($"Warning: {filePath} not found. Starting with empty customer list.");
+                Console.WriteLine($"Warning: {AppConstants.CUSTOMERS_FILE} not found. Starting with empty customer list.");
                 return;
             }
 
             try
             {
-                using (StreamReader sr = new StreamReader(filePath))
+                using (StreamReader sr = new StreamReader(AppConstants.CUSTOMERS_FILE))
                 {
                     sr.ReadLine(); // Skip header
 
@@ -169,7 +167,7 @@ namespace Assignment
                             {
                                 string name = data[0].Trim();
                                 int memberId = int.Parse(data[1]);
-                                DateTime dob = DateTime.ParseExact(data[2], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                DateTime dob = DateTime.ParseExact(data[2], AppConstants.DATE_FORMAT, CultureInfo.InvariantCulture);
                                 string tier = data[3].Trim();
                                 int points = int.Parse(data[4]);
                                 int punchCard = int.Parse(data[5]);
@@ -201,10 +199,10 @@ namespace Assignment
         {
             try
             {
-                string newLine = $"{customer.Name},{customer.MemberId},{customer.Dob:dd/MM/yyyy}," +
+                string newLine = $"{customer.Name},{customer.MemberId},{customer.Dob.ToString(AppConstants.DATE_FORMAT)}," +
                                $"{customer.Rewards.Tier},{customer.Rewards.Points},{customer.Rewards.PunchCard}";
 
-                using (StreamWriter sw = File.AppendText("customers.csv"))
+                using (StreamWriter sw = File.AppendText(AppConstants.CUSTOMERS_FILE))
                 {
                     sw.WriteLine(newLine);
                 }
