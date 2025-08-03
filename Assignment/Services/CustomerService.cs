@@ -1,4 +1,4 @@
-//==========================================================
+﻿//==========================================================
 // Student Number : S10259432
 // Student Name : Liew Zhan Yang
 // Partner Number : S10257777
@@ -58,15 +58,18 @@ namespace Assignment
             {
                 // Get customer name
                 string name = GetValidCustomerName();
+                if (string.IsNullOrEmpty(name)) return;
 
                 // Get unique member ID
-                int memberId = GetUniqueMemberId();
+                int? memberId = GetUniqueMemberId();
+                if (!memberId.HasValue) return;
 
                 // Get date of birth
-                DateTime dob = GetValidDateOfBirth();
+                DateTime? dob = GetValidDateOfBirth();
+                if (!dob.HasValue) return;
 
                 // Create new customer
-                Customer newCustomer = new Customer(name, memberId, dob)
+                Customer newCustomer = new Customer(name, memberId.Value, dob.Value)
                 {
                     Rewards = new PointCard(),
                     OrderHistory = new List<Order>()
@@ -78,7 +81,7 @@ namespace Assignment
                 // Save to CSV
                 dataManager.SaveCustomerToCsv(newCustomer);
 
-                Console.WriteLine($"\nCustomer '{name}' registered successfully with Member ID: {memberId}");
+                Console.WriteLine($"\nCustomer '{name}' registered successfully with Member ID: {memberId.Value}");
             }
             catch (Exception ex)
             {
@@ -107,53 +110,83 @@ namespace Assignment
 
         private string GetValidCustomerName()
         {
-            while (true)
+            const int maxAttempts = 3;
+
+            for (int attempt = 1; attempt <= maxAttempts; attempt++)
             {
-                Console.Write("Enter customer's name: ");
-                string name = Console.ReadLine()?.Trim();
-
-                if (!string.IsNullOrEmpty(name))
+                try
                 {
-                    return name;
-                }
+                    Console.Write("Enter customer's name: ");
+                    string name = Console.ReadLine()?.Trim();
 
-                Console.WriteLine("Name cannot be empty. Please try again.");
+                    if (!string.IsNullOrWhiteSpace(name) && name.Length >= 2 && name.Length <= 50)
+                    {
+                        return name;
+                    }
+
+                    var remainingAttempts = maxAttempts - attempt;
+                    if (remainingAttempts > 0)
+                    {
+                        Console.WriteLine($"Invalid name. Name must be 2-50 characters long. {remainingAttempts} attempts remaining.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Input error: {ex.Message}");
+                }
             }
+
+            Console.WriteLine("Failed to get valid customer name after maximum attempts.");
+            return null;
         }
 
-        private int GetUniqueMemberId()
+        private int? GetUniqueMemberId()
         {
-            while (true)
+            const int maxAttempts = 3;
+
+            for (int attempt = 1; attempt <= maxAttempts; attempt++)
             {
                 try
                 {
                     Console.Write("Enter customer's ID number: ");
-                    int memberId = Convert.ToInt32(Console.ReadLine());
+                    string memberIdInput = Console.ReadLine();
+
+                    if (!int.TryParse(memberIdInput, out int memberId))
+                    {
+                        throw new FormatException("Member ID must be a valid number.");
+                    }
 
                     if (memberId <= 0)
                     {
-                        Console.WriteLine("Member ID must be a positive number.");
-                        continue;
+                        throw new ArgumentException("Member ID must be a positive number.");
                     }
 
                     if (dataManager.Customers.Any(c => c.MemberId == memberId))
                     {
-                        Console.WriteLine("Member ID already exists. Please enter a different ID.");
-                        continue;
+                        throw new InvalidOperationException($"Member ID {memberId} already exists.");
                     }
 
                     return memberId;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Please enter a valid number.");
+                    var remainingAttempts = maxAttempts - attempt;
+                    if (remainingAttempts > 0)
+                    {
+                        Console.WriteLine($"{ex.Message} {remainingAttempts} attempts remaining.");
+                    }
                 }
             }
+
+            Console.WriteLine("Failed to get valid member ID after maximum attempts.");
+            return null;
         }
 
-        private DateTime GetValidDateOfBirth()
+        private DateTime? GetValidDateOfBirth()
         {
-            while (true)
+            const int maxAttempts = 3;
+
+            for (int attempt = 1; attempt <= maxAttempts; attempt++)
             {
                 try
                 {
@@ -165,24 +198,29 @@ namespace Assignment
                     // Validate that the date is not in the future
                     if (dob > DateTime.Today)
                     {
-                        Console.WriteLine("Date of birth cannot be in the future.");
-                        continue;
+                        throw new ArgumentException("Date of birth cannot be in the future.");
                     }
 
-                    // Validate reasonable age range (e.g., not older than 150 years)
+                    // Validate reasonable age range
                     if (dob < DateTime.Today.AddYears(-150))
                     {
-                        Console.WriteLine("Please enter a valid date of birth.");
-                        continue;
+                        throw new ArgumentException("Please enter a valid date of birth.");
                     }
 
                     return dob;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Please enter a valid date in dd/MM/yyyy format.");
+                    var remainingAttempts = maxAttempts - attempt;
+                    if (remainingAttempts > 0)
+                    {
+                        Console.WriteLine($"{ex.Message} {remainingAttempts} attempts remaining.");
+                    }
                 }
             }
+
+            Console.WriteLine("Failed to get valid date of birth after maximum attempts.");
+            return null;
         }
 
         public Customer SelectCustomerById()

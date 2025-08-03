@@ -1,11 +1,4 @@
-﻿//==========================================================
-// Student Number : S10259432
-// Student Name : Liew Zhan Yang
-// Partner Number : S10257777
-// Partner Name : Amicus Lee Ming Ge
-//==========================================================
-
-using System;
+﻿using System;
 
 namespace Assignment
 {
@@ -15,7 +8,6 @@ namespace Assignment
         {
             try
             {
-                // Initialize the application
                 var app = new IceCreamShopApp();
                 app.Run();
             }
@@ -28,4 +20,3 @@ namespace Assignment
         }
     }
 }
-//dsfdsf
