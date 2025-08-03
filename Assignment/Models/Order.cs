@@ -1,19 +1,10 @@
-﻿//==========================================================
-// Student Number : S10259432
-// Student Name : Liew Zhan Yang
-// Partner Number : S10257777
-// Partner Name : Amicus Lee Ming Ge
-//==========================================================
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assignment
 {
-    class Order
+    public class Order  // Added 'public'
     {
         public int Id { get; set; }
         public DateTime TimeReceived { get; set; }
@@ -22,10 +13,10 @@ namespace Assignment
 
         public Order()
         {
-            
+
         }
 
-        public Order(int id,DateTime timeReceived)
+        public Order(int id, DateTime timeReceived)
         {
             Id = id;
             TimeReceived = timeReceived;
@@ -33,29 +24,24 @@ namespace Assignment
 
         public void ModifyIceCream(int id)
         {
-
+            // Implementation can be added later if needed
         }
 
-        public void AddiceCream(IceCream iceCream) 
+        public void AddiceCream(IceCream iceCream)
         {
             IceCreamList.Add(iceCream);
-        
         }
 
         public void DeleteIceCream(int index)
         {
-            if(index >= 0 && index < IceCreamList.Count) 
+            if (index >= 0 && index < IceCreamList.Count)
             {
                 IceCreamList.RemoveAt(index);
-            
             }
             else
             {
                 throw new Exception("The ice cream index is out of range.");
-
-
             }
-
         }
 
         public double CalculateTotal(Dictionary<string, double> optionsDict, List<Flavour> allFlavours, List<Topping> allToppings, PointCard pointCard, bool redeemPoints = false)
@@ -64,7 +50,6 @@ namespace Assignment
 
             foreach (var iceCream in IceCreamList)
             {
-                // Pass the required parameters to the CalculatePrice method
                 total += iceCream.CalculatePrice(optionsDict, allFlavours, allToppings);
             }
 
@@ -76,7 +61,7 @@ namespace Assignment
                     bool redeemed = pointCard.RedeemPoints(pointsToRedeem);
                     if (redeemed)
                     {
-                        total -= pointsToRedeem * 0.02; // Deduct the amount redeemed from the total
+                        total -= pointsToRedeem * 0.02;
                     }
                 }
             }
@@ -84,18 +69,9 @@ namespace Assignment
             return total;
         }
 
-
-        private int CalculatePointsEarned(double total)
+        public override string ToString()
         {
-            return (int)Math.Floor(total * 0.72);
-        }
-
-
-
-        public override string ToString() 
-        {
-            return ("Id: " + Id + "TimeReceived: " + TimeReceived);
-              
+            return ("Id: " + Id + " TimeReceived: " + TimeReceived);
         }
     }
 }

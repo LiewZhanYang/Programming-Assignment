@@ -1,34 +1,23 @@
-﻿//==========================================================
-// Student Number : S10259432
-// Student Name : Liew Zhan Yang
-// Partner Number : S10257777
-// Partner Name : Amicus Lee Ming Ge
-//==========================================================
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Assignment
 {
-    class PointCard
+    public class PointCard  // Added 'public'
     {
         public int Points { get; set; }
         public int PunchCard { get; set; }
         public string Tier { get; set; }
-
 
         public PointCard()
         {
             Tier = "Ordinary";
         }
 
-        public PointCard(int points,int punchCard)
+        public PointCard(int points, int punchCard)
         {
             Points = points;
             PunchCard = punchCard;
+            Tier = "Ordinary";
         }
 
         public void AddPoints(int pointsToAdd)
@@ -39,10 +28,9 @@ namespace Assignment
             {
                 Tier = "Gold";
             }
-            else if (Points >= 50 && Tier != "Silver") 
+            else if (Points >= 50 && Tier != "Silver")
             {
                 Tier = "Silver";
-
             }
         }
 
@@ -52,16 +40,14 @@ namespace Assignment
             {
                 Points -= pointsToRedeem;
                 return true;
-                
             }
             return false;
-            
         }
 
         public void Punch()
         {
             PunchCard++;
-            if (PunchCard > 10)
+            if (PunchCard >= 10)
             {
                 PunchCard = 0;
             }
@@ -71,7 +57,5 @@ namespace Assignment
         {
             return ("Points: " + Points + "\tPunchCard: " + PunchCard + "\tTier: " + Tier);
         }
-
-
     }
 }
